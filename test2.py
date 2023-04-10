@@ -1,8 +1,9 @@
 from Downloader import Downloader
 from Parser import Parser
 
-downloader = Downloader('http://www.bankofdl.com/home/pc/gywm/cggg/list_2.shtml')
+downloader = Downloader('https://wsgg.sbj.cnipa.gov.cn:9443/tmann/annInfoView/homePage.html')
 
 content = downloader.download(decode=True)['content']
-parser = Parser(content)
+parser = Parser()
+parser.load_content(content)
 print(parser.parse_html('xpath/wsgg.yaml'))

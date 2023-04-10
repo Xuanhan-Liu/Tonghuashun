@@ -1,5 +1,4 @@
-import time
-
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import ActionChains
@@ -10,10 +9,13 @@ import platform
 
 
 class Selenium_Handler:
-    def __init__(self, driver_path, headless=True):
+    def __init__(self, driver_path, headless=True, file_path='./config/ua.txt'):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            self.UAs = file.read().split('\n')
+        idx = random.randint(0, len(self.UAs))
         options = Options()
         options.add_argument(
-            'user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.54')
+            'user-agent=' + self.UAs[idx])
         options.add_argument("--disable-extensions")
         options.add_argument("--disable-gpu")
         if headless:
@@ -27,7 +29,8 @@ class Selenium_Handler:
                                        options=options)
         self.driver.set_window_size(1366, 768)
         self.driver.execute_cdp_cmd("Network.enable", {})
-        self.driver.execute_cdp_cmd("Network.setExtraHTTPHeaders", {"headers": {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.54"}})
+        self.driver.execute_cdp_cmd("Network.setExtraHTTPHeaders", {"headers": {
+            "User-Agent": self.UAs[idx]}})
         self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": """
                     Object.defineProperty(navigator, 'webdriver', {
@@ -59,10 +62,9 @@ class Selenium_Handler:
         slider_action = ActionChains(self.driver)
         slider_action.move_to_element(button)
         slider_action.click_and_hold().perform()
-        for i in range(int(end_x - start_x) // 30):
-            slider_action.move_by_offset(i * 30, 0).pause(0.01)
-        # slider_action.move_by_offset(offset_width, 0).perform()
-        self.driver.save_screenshot('test.png')
+        # for i in range(int(end_x - start_x) // 30):
+        #     slider_action.move_by_offset(i * 30, 0).pause(0.01)
+        slider_action.move_by_offset(offset_width, 0).perform()
         slider_action.release().perform()
 
         page_source = self.driver.page_source
