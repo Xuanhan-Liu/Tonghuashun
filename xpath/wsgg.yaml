@@ -1,0 +1,14 @@
+rules:
+  - name: "table"
+    xpath: "/html/body/div[3]/div/div/div[2]/table"
+    children:
+      - name: "title"
+        xpath: ".//tr[1]"
+        children:
+          - name: "title_detail"
+            xpath: ".//th"
+      - name: "list"
+        xpath: ".//tr"
+        children:
+          - name: "list_detail"
+            xpath: ".//td"

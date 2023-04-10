@@ -1,0 +1,13 @@
+rules:
+  - name: "Sell_List"
+    xpath: "/html/body/div[5]/div[@class='sell_list_rgt']"
+    children:
+      - name: "title"
+        xpath: ".//h5"
+      - name: "list"
+        xpath: ".//li"
+        children:
+          - name: "content"
+            xpath: ".//a"
+          - name: "time"
+            xpath: ".//i"

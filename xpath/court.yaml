@@ -1,0 +1,18 @@
+rules:
+  - name: "case_info_table"
+    xpath: '//*[@id="wrapper"]/div[5]/div[@class="case-info"]'
+    children:
+      - name: "detail_title"
+        xpath: './/div[@class="details-title-s"][1]/span'
+      - name: "detail"
+        xpath: './/div[@class="part trial-info"]'
+        children:
+          - name: "detail_title"
+            xpath: ".//h3"
+          - name: "detail_info"
+            xpath: './/ul'
+            children:
+              - name: "key"
+                xpath: './/li/span'
+              - name: "info"
+                xpath: './/li/i'
